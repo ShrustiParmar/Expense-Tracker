@@ -154,8 +154,14 @@ canvas {
                     $${budget.spentAmount} / $${budget.monthlyBudget}
                 </div>
             </div>
+            <c:if test="${budget.spentAmount > budget.monthlyBudget}">
+                <p style="color: red;">Warning: You have exceeded your budget for ${budget.category}!</p>
+            </c:if>
         </div>
     </c:forEach>
+
+    <!-- Add Budget Button -->
+    <a href="set-budget.jsp">Set Budget</a>
 
     <!-- Income vs Expenses Pie Chart -->
     <div class="chart-container">

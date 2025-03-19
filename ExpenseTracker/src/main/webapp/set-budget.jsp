@@ -49,22 +49,22 @@
     </style>
 </head>
 <body>
-    <form action="budget" method="post">
-        <input type="hidden" name="action" value="add">
+    <form action="${pageContext.request.contextPath}/budget" method="post">
+    <input type="hidden" name="action" value="add">
 
-        <label for="category">Category:</label>
-        <select id="category" name="category" required>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Others">Others</option>
-        </select>
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Others">Others</option>
+    </select>
 
-        <label for="monthlyBudget">Monthly Budget:</label>
-        <input type="number" id="monthlyBudget" name="monthlyBudget" step="0.01" required>
+    <label for="monthlyBudget">Monthly Budget:</label>
+    <input type="number" id="monthlyBudget" name="monthlyBudget" step="0.01" required>
 
-        <button type="submit">Set Budget</button>
-    </form>
+    <button type="submit">Set Budget</button>
+</form>
 
     <c:if test="${not empty message}">
         <p style="color: green;">${message}</p>

@@ -102,4 +102,8 @@
     <url-pattern>/css/*</url-pattern>
 </servlet-mapping>
   
+  <listener>
+    <listener-class>com.expense.listener.AppContextListener</listener-class>
+</listener>
+
 </web-app>
