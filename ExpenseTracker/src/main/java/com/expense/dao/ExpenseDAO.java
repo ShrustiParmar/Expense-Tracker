@@ -5,6 +5,7 @@ import com.expense.model.User;
 import com.expense.model.Category;
 import com.expense.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import java.util.List;
 
@@ -12,36 +13,48 @@ public class ExpenseDAO {
 
     // Add a new expense
     public void addExpense(Expense expense) {
+        Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.save(expense);
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
 
     // Update an existing expense
     public void updateExpense(Expense expense) {
+        Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.update(expense);
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
 
     // Delete an expense by ID
     public void deleteExpense(int expenseId) {
+        Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             Expense expense = session.get(Expense.class, expenseId);
             if (expense != null) {
                 session.delete(expense);
             }
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
@@ -119,21 +132,6 @@ public class ExpenseDAO {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
-        }
-    }
-    
- // Get total expenses for a specific category for a user
-    public double getTotalExpensesByCategory(int userId, String category) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "SELECT SUM(amount) FROM Expense WHERE user.userId = :userId AND category = :category";
-            Query<Double> query = session.createQuery(hql, Double.class);
-            query.setParameter("userId", userId);
-            query.setParameter("category", category);
-            Double totalExpenses = query.uniqueResult();
-            return totalExpenses != null ? totalExpenses : 0.0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0.0;
         }
     }
 }

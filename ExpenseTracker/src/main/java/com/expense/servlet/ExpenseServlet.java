@@ -109,14 +109,14 @@ public class ExpenseServlet extends HttpServlet {
             Date expenseDate = Date.valueOf(request.getParameter("expense_date"));
             String notes = request.getParameter("notes");
 
-            Expense expense = new Expense();
-            expense.setExpenseId(expenseId);
-            expense.setAmount(amount);
-            expense.setCategory(category);
-            expense.setExpenseDate(expenseDate);
-            expense.setNotes(notes);
-
-            expenseDAO.updateExpense(expense);
+            Expense expense = expenseDAO.getExpenseById(expenseId);
+            if (expense != null) {
+                expense.setAmount(amount);
+                expense.setCategory(category);
+                expense.setExpenseDate(expenseDate);
+                expense.setNotes(notes);
+                expenseDAO.updateExpense(expense);
+            }
             response.sendRedirect("expenses?action=list");
         } catch (Exception e) {
             request.setAttribute("error", "Invalid input. Please check your entries.");
